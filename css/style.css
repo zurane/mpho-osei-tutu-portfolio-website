@@ -516,6 +516,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 1023px) {
   .menu__base { align-items: center; justify-content: center; }
   .menu__base .social { justify-content: center; }
+  .menu nav { align-self: center; } /* Links sit in the middle of the screen */
 }
 
 /* ---------- Credits: logos drift past endlessly, fading out at both edges ---------- */
