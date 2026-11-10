@@ -200,14 +200,20 @@
         </div>
       </section>
 
-      <nav aria-label="Footer">
-        <ol class="biglist" data-footer-list>
-          <li><a href="#top"><small>01</small><span>Home</span></a></li>
-          <li><a href="#about"><small>02</small><span>About</span></a></li>
-          <li><a href="#media"><small>03</small><span>Media</span></a></li>
-          <li><a href="#word"><small>04</small><span>Press</span></a></li>
-        </ol>
-      </nav>
+      <div class="enquiry" data-enquiry>
+        <h3 class="contact__label">Send A Message</h3>
+        <form class="form" data-form data-to="info@owens.co.za" novalidate>
+          <div class="field"><input id="f-name" name="name" type="text" autocomplete="name" placeholder=" " required><label for="f-name">Name</label></div>
+          <div class="field"><input id="f-email" name="email" type="email" autocomplete="email" placeholder=" " required><label for="f-email">Email</label></div>
+          <div class="field"><input id="f-city" name="city" type="text" autocomplete="address-level2" placeholder=" "><label for="f-city">City</label></div>
+          <div class="field"><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder=" "><label for="f-phone">Phone</label></div>
+          <div class="field field--wide"><textarea id="f-message" name="message" rows="4" placeholder=" " required></textarea><label for="f-message">Message</label></div>
+          <div class="form__foot">
+            <button class="btn" type="submit" data-magnetic data-pop><span class="btn__label">Send Message</span></button>
+            <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
       <div class="footer__base">
         <small>© 2026 Mpho Osei-Tutu. All Rights Reserved.</small>
         <ul class="social" data-social>

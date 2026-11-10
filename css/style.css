@@ -213,7 +213,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   gap: calc(var(--u) * 1);
   width: min(100%, calc(var(--u) * 58)); /* Smaller cards, sitting within the title's width */
   margin: -100svh auto 0; /* Slides up underneath the pinned title */
-  padding-block: 60svh; /* The videos arrive from below the title and leave above it */
+  padding-block: 12svh 60svh; /* The videos arrive ahead of the title, then leave above it */
 }
 /* Bento: each column is the same height, split into tall portrait tiles and shorter ones */
 .media__col { display: flex; flex-direction: column; gap: calc(var(--u) * 1); height: calc(var(--u) * 50); }
@@ -377,18 +377,52 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 .contact__details a:hover, .contact__details a:focus-visible { background-size: 100% 1px; }
 
-.footer__body nav { width: var(--footer-width); margin-inline: auto; }
-.footer .biglist a { padding-inline: 0; }
-/* Footer dividers are drawn lines, so they can animate across on arrival */
-.footer .biglist li, .footer .biglist li:last-child { position: relative; border: 0; }
-.footer .biglist li::before, .footer .biglist li:last-child::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 0;
-  height: 1px;
-  background: rgb(255 255 255 / .25);
-  transform: scaleX(var(--draw, 1));
-  transform-origin: left;
+/* Enquiry form: laid out like the contact rows, with a label on the left and fields on the right */
+.enquiry {
+  position: relative;
+  width: var(--footer-width); margin-inline: auto;
+  display: grid; grid-template-columns: 1fr 1.25fr; gap: 24px;
+  padding-block: clamp(28px, calc(var(--u) * 3), 56px);
 }
-.footer .biglist li:last-child::after { top: auto; bottom: 0; }
+.enquiry::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0;
+  height: 1px; background: rgb(255 255 255 / .3);
+  transform: scaleX(var(--draw, 1)); transform-origin: left;
+}
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, calc(var(--u) * 1.6), 30px) clamp(16px, calc(var(--u) * 1.6), 30px); }
+.field { position: relative; }
+.field--wide, .form__foot { grid-column: 1 / -1; }
+.field input, .field textarea {
+  display: block; width: 100%;
+  padding: 1.5em 0 .55em;
+  border: 0; border-bottom: 1px solid rgb(255 255 255 / .45); border-radius: 0;
+  background: transparent; color: var(--white);
+  font: inherit; font-size: clamp(1rem, calc(var(--u) * 1.2), 1.4rem); letter-spacing: -.02em;
+  outline: none; resize: vertical;
+  transition: border-color .3s;
+}
+.field textarea { min-height: 7.5em; }
+/* The label sits in the field, then lifts and shrinks once it is in use */
+.field label {
+  position: absolute; left: 0; top: 1.5em;
+  font-size: clamp(1rem, calc(var(--u) * 1.2), 1.4rem); letter-spacing: -.02em;
+  color: var(--label);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform .35s cubic-bezier(.65, 0, .35, 1), color .3s;
+}
+.field input:focus + label, .field textarea:focus + label,
+.field input:not(:placeholder-shown) + label, .field textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1.3em) scale(.72);
+}
+.field input:focus, .field textarea:focus { border-bottom-color: var(--white); }
+.field input:focus + label, .field textarea:focus + label { color: var(--white); }
+.field.is-invalid input, .field.is-invalid textarea { border-bottom-color: #FFD1D1; }
+.field.is-invalid label { color: #FFD1D1; }
+.form__foot { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+.form__foot .btn { border: 0; cursor: pointer; font-family: inherit; }
+.form__status { font-size: .95rem; color: var(--label); }
+
 .footer__base {
   width: var(--footer-width); margin-inline: auto;
   display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
@@ -439,7 +473,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .title--media { font-size: clamp(2.2rem, 10.5vw, 4rem); }
   /* Bento on phones too: two columns of mixed heights that finish level */
   /* Less empty space after the last cards, so the next section follows sooner */
-  .media__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 17vw; grid-auto-flow: dense; gap: 10px; width: 100%; padding-bottom: 32svh; }
+  .media__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 17vw; grid-auto-flow: dense; gap: 10px; width: 100%; padding-block: 10svh 32svh; } /* The first cards peek in at the bottom of the hero */
   .vcard { grid-row: span var(--span); }
   .media__col { display: contents; }
   .media__head { gap: 24px; }
@@ -465,7 +499,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .footer__body { padding: 24px var(--gutter) 20px; }
   .contact { padding-block: 40px 56px; }
   .contact__rows { margin-top: 28px; }
-  .contact__row { grid-template-columns: 1fr; gap: 12px; }
+  .contact__row, .enquiry { grid-template-columns: 1fr; gap: 12px; }
+  .form { grid-template-columns: 1fr; }
   .footer__base, .menu__base { flex-direction: column-reverse; align-items: flex-start; }
   .social .social__follow { margin-left: 0; }
 }

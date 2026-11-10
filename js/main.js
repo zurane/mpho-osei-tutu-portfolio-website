@@ -255,6 +255,37 @@
   }
 
   /* ---------- Footer: contact rows, then dividers draw across and links rise in ---------- */
+  /* ---------- Enquiry form: checks the fields, then opens an email ready to send ---------- */
+  function initForm() {
+    const form = $('[data-form]');
+    if (!form) return;
+    const status = $('[data-form-status]', form);
+    const mark = (field) => {
+      const ok = field.checkValidity();
+      field.closest('.field').classList.toggle('is-invalid', !ok);
+      return ok;
+    };
+    form.addEventListener('input', (e) => {
+      if (e.target.closest('.is-invalid')) mark(e.target);
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fields = [...form.elements].filter((el) => el.name);
+      const bad = fields.filter((el) => !mark(el));
+      if (bad.length) {
+        status.textContent = 'Please add your name, a valid email and a message.';
+        bad[0].focus();
+        return;
+      }
+      const v = Object.fromEntries(fields.map((el) => [el.name, el.value.trim()]));
+      const details = [`Name: ${v.name}`, `Email: ${v.email}`, v.city && `City: ${v.city}`, v.phone && `Phone: ${v.phone}`].filter(Boolean);
+      const body = [v.message, '', ...details].join('\n');
+      const subject = `Enquiry for Mpho Osei-Tutu from ${v.name}`;
+      location.href = `mailto:${form.dataset.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      status.textContent = 'Your email app should open with the message ready to send.';
+    });
+  }
+
   function initFooter() {
     $$('[data-contact-row]').forEach((row) => {
       const anim = gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 88%', once: true } })
@@ -263,15 +294,15 @@
       guardReveal(row, () => anim);
     });
 
-    const list = $('[data-footer-list]');
+    const enquiry = $('[data-enquiry]');
     const arrival = gsap.timeline({
-      scrollTrigger: { trigger: list, start: 'top 88%', once: true },
+      scrollTrigger: { trigger: enquiry, start: 'top 88%', once: true },
     })
-      .fromTo('[data-footer-list] li', { '--draw': 0 }, { '--draw': 1, duration: 1, ease: 'expo.out', stagger: 0.08 }, 0.1)
-      .from('[data-footer-list] a', { autoAlpha: 0, y: 44, duration: 0.85, ease: 'power3.out', stagger: 0.08 }, 0.2)
+      .fromTo(enquiry, { '--draw': 0 }, { '--draw': 1, duration: 1, ease: 'expo.out' }, 0)
+      .from(enquiry.querySelectorAll('.contact__label, .field, .form__foot'), { autoAlpha: 0, y: 28, duration: 0.8, ease: 'power3.out', stagger: 0.07 }, 0.05)
       .from('.footer__base small', { autoAlpha: 0, y: 16, duration: 0.7, ease: 'power3.out' }, 0.7)
       .from('[data-social] li', { autoAlpha: 0, y: 14, scale: 0.7, duration: 0.6, ease: EASE.bounce, stagger: 0.05 }, 0.7);
-    guardReveal(list, () => arrival);
+    guardReveal(enquiry, () => arrival);
   }
 
   /* ---------- Magnetic buttons ---------- */
@@ -591,6 +622,7 @@
   /* ---------- Boot ---------- */
   function boot() {
     initPreviews();
+    initForm(); // Works with or without motion
     $$('.btn__label').forEach((l) => { l.innerHTML = `<span class="btn__roll">${l.textContent}</span>`; });
     initScroll();
     initMenu();
