@@ -9,7 +9,8 @@
   --body: #1652DF;
   /* Light take on the design's blue-to-lilac heading gradient, for the darker page */
   /* Iridescent heading colour: three headings wide, and the visible window slides along it */
-  --iris: linear-gradient(105deg, #EAF6FF 0%, #9FD8FF 17%, #C9A8FF 34%, #F7A8FF 50%, #C9A8FF 67%, #9FD8FF 84%, #EAF6FF 100%);
+  /* Heading shimmer: kept pale enough that every colour reads clearly on the blue (at least 4.8:1 contrast) */
+  --iris: linear-gradient(105deg, #FFFFFF 0%, #D6EEFF 17%, #E6DAFF 34%, #FFDDFB 50%, #E6DAFF 67%, #D6EEFF 84%, #FFFFFF 100%);
   --label: #C4E4FF; /* Small text; the gradient colours are too low-contrast at this size */
   --placeholder: #d9d9d9;
   --ink: #000;
@@ -236,7 +237,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* ---------- Word ---------- */
 .word {
   display: flex; flex-direction: column; align-items: center;
-  padding: calc(var(--u) * 7) var(--gutter) calc(var(--u) * 11);
+  padding: calc(var(--u) * 7) var(--gutter) calc(var(--u) * 6);
 }
 .fan {
   position: relative;
@@ -444,7 +445,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .media__head { gap: 24px; }
   .media { margin-top: -25svh; }
   .statement { position: relative; z-index: 3; } /* Stays above the media glow it now overlaps */ /* Closes the empty space above the pinned media title */
-  .word { padding: 135px var(--gutter) 88px; margin-top: -30svh; position: relative; z-index: 3; } /* Rises into the empty space under the pinned media title */
+  .word { padding: 135px var(--gutter) 40px; margin-top: -30svh; position: relative; z-index: 3; } /* Rises into the empty space under the pinned media title */
   /* Phones: the fan becomes a swipeable row of large cards, with the next one peeking in */
   .fan {
     align-self: stretch; width: auto; aspect-ratio: auto;
@@ -480,4 +481,28 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 1023px) {
   .menu__base { align-items: center; justify-content: center; }
   .menu__base .social { justify-content: center; }
+}
+
+/* ---------- Credits: logos drift past endlessly, fading out at both edges ---------- */
+.credits {
+  align-self: center; width: min(100%, calc(var(--u) * 66)); /* Spans the same width as the fanned cards above */
+  margin: calc(var(--u) * 13) 0 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+.credits__track { display: flex; width: max-content; animation: credits-scroll 45s linear infinite; }
+.credits:hover .credits__track { animation-play-state: paused; }
+.credits__group { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; }
+.credits__group li { padding-inline: clamp(24px, calc(var(--u) * 3), 56px); }
+.credits__group img {
+  display: block; height: clamp(28px, calc(var(--u) * 2.6), 44px); width: auto;
+  filter: brightness(0) invert(1); opacity: .75; /* White on the blue page; the files are low resolution, so they stay small */
+}
+@keyframes credits-scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .credits__track { animation: none; }
+}
+@media (max-width: 767px) {
+  .credits { margin-top: 104px; width: 78vw; } /* Matches the width of one swipe card */
 }
