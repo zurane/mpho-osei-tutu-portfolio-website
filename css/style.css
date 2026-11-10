@@ -437,11 +437,14 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .title--statement { text-wrap: balance; }
   .title--media { font-size: clamp(2.2rem, 10.5vw, 4rem); }
   /* Bento on phones too: two columns of mixed heights that finish level */
-  .media__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 17vw; grid-auto-flow: dense; gap: 10px; width: 100%; }
+  /* Less empty space after the last cards, so the next section follows sooner */
+  .media__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 17vw; grid-auto-flow: dense; gap: 10px; width: 100%; padding-bottom: 32svh; }
   .vcard { grid-row: span var(--span); }
   .media__col { display: contents; }
   .media__head { gap: 24px; }
-  .word { padding: 56px var(--gutter) 88px; }
+  .media { margin-top: -25svh; }
+  .statement { position: relative; z-index: 3; } /* Stays above the media glow it now overlaps */ /* Closes the empty space above the pinned media title */
+  .word { padding: 56px var(--gutter) 88px; margin-top: -30svh; position: relative; z-index: 3; } /* Rises into the empty space under the pinned media title */
   .fan { width: 40vw; margin: 40px 0 44px; }
   .post--left { margin-left: -25vw; margin-top: 2vw; }
   .post--right { margin-left: 25vw; margin-top: 2vw; }
@@ -459,3 +462,9 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Copyright line: uppercase with a little tracking so the capitals breathe */
 .footer__base > small, .menu__base > small { text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; }
+
+/* Phones and tablets: the menu's social links sit centred at the bottom */
+@media (max-width: 1023px) {
+  .menu__base { align-items: center; justify-content: center; }
+  .menu__base .social { justify-content: center; }
+}
