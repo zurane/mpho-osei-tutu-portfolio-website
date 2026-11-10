@@ -210,6 +210,19 @@
 
   /* ---------- Word: the three posts fan out as they arrive ---------- */
   function initWord() {
+    gsap.matchMedia()
+      .add('(min-width: 768px)', initWordFan)
+      // Phones: a swipeable row; the cards simply rise in, one after another
+      .add('(max-width: 767px)', () => {
+        const anim = gsap.from('[data-post]', {
+          autoAlpha: 0, y: 50, duration: 0.9, ease: 'power3.out', stagger: 0.12,
+          scrollTrigger: { trigger: '[data-fan]', start: 'top 88%', once: true },
+        });
+        guardReveal($('[data-fan]'), () => anim);
+      });
+  }
+
+  function initWordFan() {
     const posts = $$('[data-post]');
     const sides = posts.filter((p) => !p.classList.contains('post--center'));
     gsap.set(posts, { rotation: (i, p) => parseFloat(p.style.getPropertyValue('--r')) });

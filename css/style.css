@@ -444,10 +444,23 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .media__head { gap: 24px; }
   .media { margin-top: -25svh; }
   .statement { position: relative; z-index: 3; } /* Stays above the media glow it now overlaps */ /* Closes the empty space above the pinned media title */
-  .word { padding: 56px var(--gutter) 88px; margin-top: -30svh; position: relative; z-index: 3; } /* Rises into the empty space under the pinned media title */
-  .fan { width: 40vw; margin: 40px 0 44px; }
-  .post--left { margin-left: -25vw; margin-top: 2vw; }
-  .post--right { margin-left: 25vw; margin-top: 2vw; }
+  .word { padding: 135px var(--gutter) 88px; margin-top: -30svh; position: relative; z-index: 3; } /* Rises into the empty space under the pinned media title */
+  /* Phones: the fan becomes a swipeable row of large cards, with the next one peeking in */
+  .fan {
+    align-self: stretch; width: auto; aspect-ratio: auto;
+    margin: 40px calc(var(--gutter) * -1) 44px;
+    display: flex; gap: 12px;
+    padding-inline: 11vw; scroll-padding-inline: 11vw;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    scrollbar-width: none; padding-block: 8px 24px;
+  }
+  .fan::-webkit-scrollbar { display: none; }
+  .post, .post--left, .post--right {
+    position: relative; flex: 0 0 78vw; height: auto; aspect-ratio: 800 / 784;
+    margin: 0; transform: none; scroll-snap-align: center;
+    box-shadow: 0 10px 24px rgb(0 25 55 / .35);
+  }
+  .post--center { order: -1; }
   .footer__body { padding: 24px var(--gutter) 20px; }
   .contact { padding-block: 40px 56px; }
   .contact__rows { margin-top: 28px; }
